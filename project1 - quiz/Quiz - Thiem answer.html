@@ -85,7 +85,7 @@
     // explanation should be the "explanation" div
 
     let statementDiv = document.querySelector("#statement");
-    const OPTIONS_OBJ = document.querySelector("#options");
+    const OPTIONS_OBJ = document.querySelector("#options").getElementsByTagName("button");
     let explanationDiv = document.querySelector("#explanation");
 
 
@@ -94,29 +94,65 @@
 
     let fact = {
         statement: "The school bus is yellow", 
-        answer: true, 
-        explanation: "lateral peripheral vision for detecting the color yellow is 1.24 greater than that of the color red"
+        answer: "true", 
+        explanation: "Yellow is 1.24 times easier to see than red, so that's why school buses are red. Unless you're an criminal, yours are white, and greyhound buses suck."
     };
 
     
     // TODO 3: Set the text of the statement element to the fact's statement
 
+    statementDiv.textContent = fact.statement;
         
 
     // TODO 4: Declare disable & enable functions to set or remove the "disabled" attribute from a given button element
     // disable(button) should set the button element's attribute "disabled" to the value ""
     // enable(button) should remove the attribute "disabled" from the button element
 
+    function disableButton(buttonObject){
+        buttonObject.setAttribute("disabled","disabled");
+        console.log(buttonObject.textContent + " button disabled");
+    }
+
+    function enableButton(buttonObject){
+        buttonObject.removeAttribute("disabled");
+        console.log(buttonObject.textContent + " button enabled");
+    }
+
+    function disableAllButtons(){
+        for(let i = 0; i < OPTIONS_OBJ.length; i++){
+            OPTIONS_OBJ[i].setAttribute("disabled","disabled");
+        }
+    }
 
 
     // TODO 5: Declare an isCorrect function that compares a guess to the right answer
     // isCorrect(guess) should return true if the guess matches the fact's answer
     
-
+    function isCorrect(guess){
+        // console.log(typeof(guess));
+        // console.log(typeof(fact.answer));
+        if(fact.answer === guess.value){
+            console.log("correct");
+            guess.classList.add("correct");
+            return true;
+        } else{
+            console.log("wrong answer!");
+            guess.classList.add(".incorrect");
+            return false;
+        }
+    }
 
     // TODO 6A: Use a for loop to add a click event listener to each of the optionButtons
             // TODO 6B: Within the event handler function, display the fact's explanation by setting the text of the explanation element
 
+            for(let i = 0; i < OPTIONS_OBJ.length; i++){
+                OPTIONS_OBJ[i].addEventListener("click", function(event){
+                    isCorrect(event.target);
+                    explanationDiv.textContent = fact.explanation;
+                    // console.log(event.target);
+                    disableAllButtons();
+                });
+            }
 
             // TODO 7: Within the event handler function, 
             // Use a for loop to disable all the option buttons
